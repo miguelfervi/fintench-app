@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, BrowserRouter, Switch, Redirect } from "react-router-dom";
 
 import { useDispatch } from "react-redux";
@@ -54,13 +54,19 @@ const MainNavigation = () => {
                 <Link to="/auth">Log In</Link>
               </li>
             )}
-            <li>
-              <Link to="/wallet">Wallet</Link>
-            </li>
             {isLoggedIn && (
-              <li>
-                <button onClick={handleLogout}>Log Out</button>
-              </li>
+              <React.Fragment>
+                <li>
+                  <Link to="/wallet">Wallet</Link>
+                </li>
+                <li>
+                  <Link to="/send">Send Balance</Link>
+                </li>
+
+                <li>
+                  <button onClick={handleLogout}>Log Out</button>
+                </li>
+              </React.Fragment>
             )}
           </ul>
         </nav>
@@ -81,6 +87,11 @@ const MainNavigation = () => {
           path="/wallet"
           isAuthenticated={isLoggedIn}
           component={WalletPage}
+        />
+        <PrivateRoute
+          path="/send"
+          isAuthenticated={isLoggedIn}
+          component={HomePage}
         />
         <Redirect to="/" />
       </Switch>
