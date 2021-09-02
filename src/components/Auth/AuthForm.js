@@ -46,7 +46,6 @@ const AuthForm = () => {
     const enteredPassword = passwordInputRef.current.value;
     const enteredName = !isLogin ? nameInputRef.current.value : "";
 
-    console.log(enteredEmail, enteredPassword, enteredName);
     if (isLogin) {
       dispatch(startLoginEmailPassword(enteredEmail, enteredPassword));
     } else {
