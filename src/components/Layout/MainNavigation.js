@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 
 import { firebase } from "../../firebase/firebase-config";
 
-import UserProfile from "../../components/Profile/UserProfile";
+import WalletPage from "../Wallet/Wallet";
 import AuthPage from "../../pages/AuthPage";
 import HomePage from "../../pages/HomePage";
 import { PrivateRoute } from "../../routers/PrivateRoute";
@@ -80,7 +80,7 @@ const MainNavigation = () => {
         <PrivateRoute
           path="/wallet"
           isAuthenticated={isLoggedIn}
-          component={UserProfile}
+          component={WalletPage}
         />
         <Redirect to="/" />
       </Switch>
