@@ -15,7 +15,8 @@ const AuthForm = () => {
   const passwordInputRef = useRef();
   const nameInputRef = useRef();
 
-  const { msgError } = useSelector((state) => state.ui);
+  const { msgError, loading } = useSelector((state) => state.ui);
+  console.log(loading);
 
   const dispatch = useDispatch();
 
@@ -43,7 +44,7 @@ const AuthForm = () => {
 
     const enteredEmail = emailInputRef.current.value;
     const enteredPassword = passwordInputRef.current.value;
-    const enteredName = !isLogin ?  nameInputRef.current.value : '';
+    const enteredName = !isLogin ? nameInputRef.current.value : "";
 
     console.log(enteredEmail, enteredPassword, enteredName);
     if (isLogin) {
@@ -82,8 +83,11 @@ const AuthForm = () => {
           />
         </div>
         <div className={classes.actions}>
-          <button>{isLogin ? "Login" : "Create Account"}</button>
-          <p>Sending request.....</p>
+          {loading ? (
+            <button disabled={loading}>Loading...</button>
+          ) : (
+            <button>{isLogin ? "Login" : "Create Account"}</button>
+          )}
           <button
             type="button"
             className={classes.toggle}

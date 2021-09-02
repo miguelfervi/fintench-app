@@ -52,6 +52,23 @@
   border: 1px solid #9f5ccc;
   border-radius: 4px;
   padding: 0.5rem 2.5rem;
+
+}
+
+.actions button:disabled {
+  cursor: pointer;
+  font: inherit;
+  color: white;
+  background-color: grey;
+  border: 1px solid grey;
+  border-radius: 4px;
+  padding: 0.5rem 2.5rem;
+  opacity: 0.5;
+}
+
+.actions button:hover:disabled {
+  background-color: grey;
+  border-color: grey;
 }
 
 .actions button:hover {
