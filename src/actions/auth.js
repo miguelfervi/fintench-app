@@ -1,3 +1,4 @@
+import { firebase } from "../firebase/firebase-config";
 import { types } from "../types/types";
 
 export const startLoginEmailPassword = (email, password) => {
@@ -5,6 +6,22 @@ export const startLoginEmailPassword = (email, password) => {
     setTimeout(() => {
       dispatch(login(12132132, "pepe"));
     }, 3500);
+  };
+};
+
+export const startRegisterEmailPassword = (email, password, displayName) => {
+  return (dispatch) => {
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .then(async ({ user }) => {
+        await user.updateProfile({ displayName });
+
+        dispatch(login(user.uid, user.displayName));
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 };
 

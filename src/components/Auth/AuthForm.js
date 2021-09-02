@@ -1,17 +1,21 @@
 import { useState, useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import validator from "validator";
 
 import classes from "./AuthForm.module.css";
-import { startLoginEmailPassword } from "../../actions/auth";
-import {setError, removeError } from '../../actions/ui'
-
+import {
+  startLoginEmailPassword,
+  startRegisterEmailPassword,
+} from "../../actions/auth";
+import { setError, removeError } from "../../actions/ui";
 
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
-  // const [isLoading, setIsLoading] = useState(false);
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
+  const nameInputRef = useRef();
+
+  const { msgError } = useSelector((state) => state.ui);
 
   const dispatch = useDispatch();
 
@@ -20,14 +24,17 @@ const AuthForm = () => {
   };
 
   const isFormValid = () => {
-    if (!validator.isEmail(emailInputRef.current.value)) {
-     dispatch(setError('Email is not valid'))
+    if (nameInputRef.current.value.length < 4) {
+      dispatch(setError("Name should be at least 4 characters"));
+      return false;
+    } else if (!validator.isEmail(emailInputRef.current.value)) {
+      dispatch(setError("Email is not valid"));
       return false;
     } else if (passwordInputRef.current.value.length < 6) {
-      dispatch(setError('Password should be at least 6 characters'))
+      dispatch(setError("Password should be at least 6 characters"));
       return false;
     }
-    dispatch(removeError())
+    dispatch(removeError());
     return true;
   };
 
@@ -36,13 +43,16 @@ const AuthForm = () => {
 
     const enteredEmail = emailInputRef.current.value;
     const enteredPassword = passwordInputRef.current.value;
+    const enteredName = !isLogin ?  nameInputRef.current.value : '';
 
-    console.log(enteredEmail, enteredPassword);
+    console.log(enteredEmail, enteredPassword, enteredName);
     if (isLogin) {
       dispatch(startLoginEmailPassword(enteredEmail, enteredPassword));
     } else {
       if (isFormValid()) {
-        console.log("form correct");
+        dispatch(
+          startRegisterEmailPassword(enteredEmail, enteredPassword, enteredName)
+        );
       }
     }
   };
@@ -50,10 +60,14 @@ const AuthForm = () => {
   return (
     <section className={classes.auth}>
       <h1>{isLogin ? "Login" : "Sign Up"}</h1>
-      <div className={classes.error}>
-      Esto es un error
-      </div>
+      {msgError && <div className={classes.error}>{msgError}</div>}
       <form onSubmit={submitHandler}>
+        {!isLogin && (
+          <div className={classes.control}>
+            <label htmlFor="name">Your Name</label>
+            <input type="text" id="name" required ref={nameInputRef} />
+          </div>
+        )}
         <div className={classes.control}>
           <label htmlFor="email">Your Email</label>
           <input type="email" id="email" required ref={emailInputRef} />
