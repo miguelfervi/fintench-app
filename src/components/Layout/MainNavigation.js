@@ -1,15 +1,21 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, BrowserRouter, Switch, Redirect } from "react-router-dom";
 
 import { useDispatch } from "react-redux";
 
 import { firebase } from "../../firebase/firebase-config";
+
+import UserProfile from "../../components/Profile/UserProfile";
+import AuthPage from "../../pages/AuthPage";
+import HomePage from "../../pages/HomePage";
+import { PrivateRoute } from "../../routers/PrivateRoute";
+import { PublicRoute } from "../../routers/PublicRoute";
+
 import { login, startLogout } from "../../actions/auth";
 import classes from "./MainNavigation.module.css";
 
 const MainNavigation = () => {
   const dispatch = useDispatch();
-
 
   const [checking, setChecking] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -19,41 +25,66 @@ const MainNavigation = () => {
       if (user?.uid) {
         dispatch(login(user.uid, user.displayName));
         setIsLoggedIn(true);
+      } else {
+        setIsLoggedIn(false);
       }
 
       setChecking(false);
     });
-  }, []);
+  }, [dispatch, setChecking]);
 
   if (checking) {
-    return (
-      <h1>Espere.....</h1>
-    )
+    return <h1>Espere.....</h1>;
   }
 
+  const handleLogout = () => {
+    dispatch(startLogout());
+  };
 
-  const handleLogout =  () => {
-    dispatch(startLogout())
-  }
   return (
-    <header className={classes.header}>
-      <Link to="/">
-        <div className={classes.logo}>Fintech App</div>
-      </Link>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/auth">Login</Link>
-          </li>
-          <li>
-            <Link to="/profile">Profile</Link>
-          </li>
-          <li>
-            <button onClick={handleLogout}>Logout</button>
-          </li>
-        </ul>
-      </nav>
-    </header>
+    <BrowserRouter>
+      <header className={classes.header}>
+        <Link to="/">
+          <div className={classes.logo}>Fintech App</div>
+        </Link>
+        <nav>
+          <ul>
+            {!isLoggedIn && (
+              <li>
+                <Link to="/auth">Log In</Link>
+              </li>
+            )}
+            <li>
+              <Link to="/wallet">Wallet</Link>
+            </li>
+            {isLoggedIn && (
+              <li>
+                <button onClick={handleLogout}>Log Out</button>
+              </li>
+            )}
+          </ul>
+        </nav>
+      </header>
+      <Switch>
+        <PublicRoute
+          path="/"
+          isAuthenticated={isLoggedIn}
+          exact
+          component={HomePage}
+        />
+        <PublicRoute
+          path="/auth"
+          isAuthenticated={isLoggedIn}
+          component={AuthPage}
+        />
+        <PrivateRoute
+          path="/wallet"
+          isAuthenticated={isLoggedIn}
+          component={UserProfile}
+        />
+        <Redirect to="/" />
+      </Switch>
+    </BrowserRouter>
   );
 };
 
