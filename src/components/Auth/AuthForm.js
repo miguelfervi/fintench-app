@@ -16,9 +16,9 @@ const AuthForm = () => {
   const nameInputRef = useRef();
 
   const { msgError, loading } = useSelector((state) => state.ui);
-  console.log(loading);
-
   const dispatch = useDispatch();
+
+  const buttonMessage = isLogin ? "Login" : "Create Account";
 
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
@@ -86,7 +86,7 @@ const AuthForm = () => {
           {loading ? (
             <button disabled={loading}>Loading...</button>
           ) : (
-            <button>{isLogin ? "Login" : "Create Account"}</button>
+            <button>{buttonMessage}</button>
           )}
           <button
             type="button"
