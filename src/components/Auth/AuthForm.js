@@ -1,15 +1,34 @@
 import { useState, useRef } from "react";
+import { useDispatch } from "react-redux";
+import validator from "validator";
 
 import classes from "./AuthForm.module.css";
+import { startLoginEmailPassword } from "../../actions/auth";
+import {setError, removeError } from '../../actions/ui'
+
 
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
 
+  const dispatch = useDispatch();
+
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
+  };
+
+  const isFormValid = () => {
+    if (!validator.isEmail(emailInputRef.current.value)) {
+     dispatch(setError('Email is not valid'))
+      return false;
+    } else if (passwordInputRef.current.value.length < 6) {
+      dispatch(setError('Password should be at least 6 characters'))
+      return false;
+    }
+    dispatch(removeError())
+    return true;
   };
 
   const submitHandler = (event) => {
@@ -18,51 +37,22 @@ const AuthForm = () => {
     const enteredEmail = emailInputRef.current.value;
     const enteredPassword = passwordInputRef.current.value;
 
-    setIsLoading(true);
-    let url;
+    console.log(enteredEmail, enteredPassword);
     if (isLogin) {
-      url =
-        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCEgrSfNEGURpOV8NdOU95nXPwv5rKQ7d0";
+      dispatch(startLoginEmailPassword(enteredEmail, enteredPassword));
     } else {
-      url =
-        "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCEgrSfNEGURpOV8NdOU95nXPwv5rKQ7d0";
+      if (isFormValid()) {
+        console.log("form correct");
+      }
     }
-
-    fetch(url, {
-      method: "POST",
-      body: JSON.stringify({
-        email: enteredEmail,
-        password: enteredPassword,
-        returnSecureToken: true,
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => {
-        setIsLoading(false);
-        if (res.ok) {
-          return res.json();
-        } else {
-          return res.json().then((data) => {
-            let errorMessage = "Authentication failed!";
-            console.log(data);
-
-            throw new Error(errorMessage);
-          });
-        }
-      })
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((err) => {
-        alert(err.message);
-      });
   };
 
   return (
     <section className={classes.auth}>
       <h1>{isLogin ? "Login" : "Sign Up"}</h1>
+      <div className={classes.error}>
+      Esto es un error
+      </div>
       <form onSubmit={submitHandler}>
         <div className={classes.control}>
           <label htmlFor="email">Your Email</label>
@@ -73,15 +63,13 @@ const AuthForm = () => {
           <input
             type="password"
             id="password"
-            required
             ref={passwordInputRef}
+            required
           />
         </div>
         <div className={classes.actions}>
-          {!isLoading && (
-            <button>{isLogin ? "Login" : "Create Account"}</button>
-          )}
-          {isLoading && <p>Sending request.....</p>}
+          <button>{isLogin ? "Login" : "Create Account"}</button>
+          <p>Sending request.....</p>
           <button
             type="button"
             className={classes.toggle}
