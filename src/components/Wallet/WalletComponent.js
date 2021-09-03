@@ -30,12 +30,11 @@ const Wallet = () => {
 
   const handleInput = (e) => {
     if (e.target.value !== "" && e.target.value.charAt(0) === "-") {
-      const isGreaterThan =
-        e.target.value !== "" &&
-        balance > 0 &&
-        balance < Math.abs(e.target.value);
+      const isGreaterThan = balance > 0 && balance < Math.abs(e.target.value);
 
-      !isGreaterThan ? setValue(parseInt(e.target.value)) : setValue(-balance);
+      !isGreaterThan && balance > 0
+        ? setValue(parseInt(e.target.value))
+        : setValue(-balance);
     } else {
       e.target.value === "" ? setValue("") : setValue(parseInt(e.target.value));
     }
