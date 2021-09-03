@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { loadBalance, updateBalance } from "../../actions/wallet";
 
-import { Input, Button, Header, Table, Container } from "semantic-ui-react";
+import { Input, Button, Header } from "semantic-ui-react";
 
-const WalletComponent = () => {
-  const { balance, history } = useSelector((state) => state.wallet);
+const TransactionSender = () => {
+  const { balance } = useSelector((state) => state.wallet);
 
   const dispatch = useDispatch();
   const [value, setValue] = useState("");
@@ -20,13 +20,6 @@ const WalletComponent = () => {
     dispatch(loadBalance());
     setValue("");
   };
-
-  const renderTransactions = history.map((transaction, index) => (
-    <Table.Row key={index}>
-      <Table.Cell textAlign="left">{transaction.id}</Table.Cell>
-      <Table.Cell singleLine>{transaction.text}</Table.Cell>
-    </Table.Row>
-  ));
 
   const handleInput = (e) => {
     if (e.target.value !== "" && e.target.value.charAt(0) === "-") {
@@ -61,27 +54,8 @@ const WalletComponent = () => {
       >
         Update
       </Button>
-      {history.length > 0 ? (
-        <Container
-          textAlign="center"
-          style={{ width: "50%", marginTop: "80px" }}
-        >
-          <Table celled>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>Id</Table.HeaderCell>
-                <Table.HeaderCell>Description</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-
-            <Table.Body>{renderTransactions}</Table.Body>
-          </Table>
-        </Container>
-      ) : (
-        <Header as="h3">There is no transactions.</Header>
-      )}
     </div>
   );
 };
 
-export default WalletComponent;
+export default TransactionSender;

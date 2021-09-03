@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 
 import { firebase } from "../../firebase/firebase-config";
 
-import WalletPage from "../Wallet/Wallet";
+import WalletPage from "../../pages/WalletPage";
 import AuthPage from "../../pages/AuthPage";
 import HomePage from "../../pages/HomePage";
 import SendPage from "../../pages/SendPage";
