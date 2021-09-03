@@ -15,7 +15,15 @@ export const updateBalance = (value) => {
   };
 };
 
-export const addTransaction = (value, id) => ({
-  type: types.addTransaction,
-  payload: {id,  text:`You have entered into the wallet $${value}`},
-});
+export const addTransaction = (value, id) => {
+  let text = ''
+  if (value < 0 ){
+    text = `You have retired into the wallet $${value}`
+  } else {
+    text = `You have deposited from the wallet $${value}`
+  }
+  return ({
+    type: types.addTransaction,
+    payload: { id, text},
+  });
+};

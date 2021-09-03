@@ -1,7 +1,7 @@
 import { types } from "../types/types";
 
 const INITIAL_STATE = {
-  balance: 1500,
+  balance: 0,
   history: [],
 };
 

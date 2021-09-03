@@ -9,7 +9,7 @@ const Wallet = () => {
   const { balance, history } = useSelector((state) => state.wallet);
 
   const dispatch = useDispatch();
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState("");
 
   useEffect(() => {
     dispatch(loadBalance());
@@ -18,6 +18,7 @@ const Wallet = () => {
   const handleBalance = () => {
     dispatch(updateBalance(value));
     dispatch(loadBalance());
+    setValue("");
   };
 
   const renderTransactions = history.map((transaction, index) => (
@@ -27,10 +28,18 @@ const Wallet = () => {
     </Table.Row>
   ));
 
-  const handleInput = (e) =>
-    e.target.value === ""
-      ? setValue(parseInt(0))
-      : setValue(parseInt(e.target.value));
+  const handleInput = (e) => {
+    if (e.target.value !== "" && e.target.value.charAt(0) === "-") {
+      const isGreaterThan =
+        e.target.value !== "" &&
+        balance > 0 &&
+        balance < Math.abs(e.target.value);
+
+      !isGreaterThan ? setValue(parseInt(e.target.value)) : setValue(-balance);
+    } else {
+      e.target.value === "" ? setValue("") : setValue(parseInt(e.target.value));
+    }
+  };
 
   return (
     <div>
@@ -38,12 +47,17 @@ const Wallet = () => {
         Your balance<Header as="h1"> ${balance}</Header>
       </div>
       <Header as="h5">Introduce a quantity to deposit</Header>
-      <Input type="number" onChange={handleInput} defaultValue={0} />
+      <Input
+        type="number"
+        onChange={handleInput}
+        value={value}
+        placeholder="Introduce a quantity"
+      />
       <Button
         style={{ marginLeft: "10px" }}
         color="purple"
         onClick={handleBalance}
-        disabled={value === 0}
+        disabled={value === 0 || value === ""}
       >
         Update
       </Button>
@@ -65,7 +79,7 @@ const Wallet = () => {
         </Container>
       ) : (
         <Header as="h3">There is no transactions.</Header>
-        )}
+      )}
     </div>
   );
 };

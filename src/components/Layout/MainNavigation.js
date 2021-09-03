@@ -44,9 +44,7 @@ const MainNavigation = () => {
   return (
     <BrowserRouter>
       <header className={classes.header}>
-        <Link to="/">
-          <div className={classes.logo}>Fintech App</div>
-        </Link>
+        <div className={classes.logo}>Fintech App</div>
         <nav>
           <ul>
             {!isLoggedIn && (
