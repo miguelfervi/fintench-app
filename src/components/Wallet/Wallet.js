@@ -1,12 +1,12 @@
-import WalletComponent from './WalletComponent';
-import classes from './Wallet.module.css';
+import WalletComponent from "./WalletComponent";
+import { Container } from "semantic-ui-react";
 
 const Wallet = () => {
   return (
-    <section className={classes.profile}>
+    <Container textAlign="center" style={{ marginTop: "40px" }}>
       <h1>Your Wallet</h1>
       <WalletComponent />
-    </section>
+    </Container>
   );
 };
 
