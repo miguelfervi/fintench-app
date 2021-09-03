@@ -1,16 +1,16 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import uniqid from "uniqid";
 
 import {
   loadBalance,
   updateBalance,
   addTransaction,
 } from "../../actions/wallet";
-import uniqid from "uniqid";
 
-import { Input, Button, Header } from "semantic-ui-react";
+import { Input, Button, Header, Container } from "semantic-ui-react";
 
-const TransactionSender = () => {
+const TransactionComponent = () => {
   const { balance } = useSelector((state) => state.wallet);
 
   const dispatch = useDispatch();
@@ -25,7 +25,6 @@ const TransactionSender = () => {
   }, [dispatch]);
 
   const handleBalance = () => {
-    console.log(value, name);
     dispatch(updateBalance(value));
     dispatch(addTransaction(value, name, uniqid()));
     setSuccess(true);
@@ -56,7 +55,7 @@ const TransactionSender = () => {
       </div>
       {balance > 0 ? (
         <div>
-          <Header as="h5">
+          <Header as="h5" style={{ marginTop: "40px", marginBottom: "40px" }}>
             Introduce a name and a quantity to transfer using negative symbol
             (-)
           </Header>
@@ -74,7 +73,7 @@ const TransactionSender = () => {
             placeholder="Introduce a quantity"
           />
           <Button
-            style={{ marginLeft: "10px" }}
+            style={{ marginLeft: "20px" }}
             color="purple"
             onClick={handleBalance}
             disabled={
@@ -91,11 +90,44 @@ const TransactionSender = () => {
       ) : (
         <div>You need to have balance</div>
       )}
-      {balance < value && <div>You need to pay the money that you have</div>}
-      {error && <div>You need put the quantity correctly</div>}
-      {success && <div>{`You send some money correctly`}</div>}
+      <Container textAlign="center">
+        {balance < value && (
+          <Header
+            as="h5"
+            style={{
+              marginTop: "10px",
+              padding: "10px",
+              color: "red",
+            }}
+          >
+            You need to pay the money that you have
+          </Header>
+        )}
+        {error && (
+          <Header textAlign="center"
+            as="h5"
+            style={{
+              marginTop: "10px",
+              padding: "10px",
+              color: "red",
+            }}
+          >
+            You need put the quantity correctly
+          </Header>
+        )}
+        {success && (
+          <Header
+            as="h5"
+            style={{
+              marginTop: "10px",
+              padding: "10px",
+              color: "green",
+            }}
+          >{`You send some money correctly`}</Header>
+        )}
+      </Container>
     </div>
   );
 };
 
-export default TransactionSender;
+export default TransactionComponent;
