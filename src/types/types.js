@@ -10,6 +10,7 @@ export const types = {
 
   loadBalance: '[Wallet] Load Balance',
   updateBalance: '[Wallet] Update Balance',
+  retireBalance: '[Wallet] Retire Balance',
 
   addTransaction: '[Wallet] Add Transaction',
 };

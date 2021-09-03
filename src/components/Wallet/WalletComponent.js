@@ -7,8 +7,10 @@ import {
   addTransaction,
 } from "../../actions/wallet";
 
-import { Input, Button, Header, Table, Container } from "semantic-ui-react";
+import { Input, Button, Header } from "semantic-ui-react";
 import uniqid from "uniqid";
+import TableComponent from "../Table/TableComponent";
+import BalanceComponent from "../BalanceComponent/BalanceComponent";
 
 const WalletComponent = () => {
   const { balance, history } = useSelector((state) => state.wallet);
@@ -27,13 +29,6 @@ const WalletComponent = () => {
     setValue("");
   };
 
-  const renderTransactions = history.map((transaction, index) => (
-    <Table.Row key={index}>
-      <Table.Cell textAlign="left">{transaction.id}</Table.Cell>
-      <Table.Cell singleLine>{transaction.text}</Table.Cell>
-    </Table.Row>
-  ));
-
   const handleInput = (e) => {
     if (e.target.value !== "" && e.target.value.charAt(0) === "-") {
       const isGreaterThan = balance < Math.abs(e.target.value);
@@ -48,10 +43,7 @@ const WalletComponent = () => {
 
   return (
     <div>
-      <Header as="h1">Your Wallet</Header>
-      <div>
-        Your balance<Header as="h1"> ${balance}</Header>
-      </div>
+      <BalanceComponent />
       <Header as="h5">Introduce a quantity to deposit</Header>
       <Input
         type="number"
@@ -67,25 +59,7 @@ const WalletComponent = () => {
       >
         Update
       </Button>
-      {history.length > 0 ? (
-        <Container
-          textAlign="center"
-          style={{ width: "50%", marginTop: "80px" }}
-        >
-          <Table celled>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>Id</Table.HeaderCell>
-                <Table.HeaderCell>Description</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-
-            <Table.Body>{renderTransactions}</Table.Body>
-          </Table>
-        </Container>
-      ) : (
-        <Header as="h3">There is no transactions.</Header>
-      )}
+     <TableComponent data={history} />
     </div>
   );
 };

@@ -13,6 +13,15 @@ export const updateBalance = (value) => {
   };
 };
 
+export const retireBalance = (value) => {
+  return (dispatch) => {
+    dispatch({
+      type: types.retireBalance,
+      payload: value,
+    });
+  };
+};
+
 export const addTransaction = (value, name, id) => {
   let text = "";
   if (value < 0 && name === '') {

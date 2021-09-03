@@ -19,12 +19,17 @@ export const walletReducer = (state = INITIAL_STATE, action) => {
         balance: state.balance + action.payload,
       };
 
-      case types.addTransaction:
-      const newTransaction = action.payload
-        return {
-          ...state,
-          history: [ ...state.history, newTransaction],
-        };
+    case types.retireBalance:
+      return {
+        ...state,
+        balance: state.balance - action.payload,
+      };
+    case types.addTransaction:
+      const newTransaction = action.payload;
+      return {
+        ...state,
+        history: [...state.history, newTransaction],
+      };
 
     default:
       return state;
