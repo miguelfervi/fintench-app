@@ -17,8 +17,10 @@ const TransactionSender = () => {
   const [value, setValue] = useState("");
   const [name, setName] = useState("");
   const [error, setError] = useState(false);
+  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
+    setSuccess(false);
     dispatch(loadBalance());
   }, [dispatch]);
 
@@ -26,15 +28,16 @@ const TransactionSender = () => {
     console.log(value, name);
     dispatch(updateBalance(value));
     dispatch(addTransaction(value, name, uniqid()));
+    setSuccess(true);
     dispatch(loadBalance());
     setValue("");
   };
 
   const handleInput = (e) => {
     setError(false);
-    if (e.target.value.charAt(0) !== "-" && e.target.value !== '') {
+    if (e.target.value.charAt(0) !== "-" && e.target.value !== "") {
       setError(true);
-      setValue('');
+      setValue("");
     } else {
       setError(false);
       setValue(parseInt(e.target.value));
@@ -74,7 +77,13 @@ const TransactionSender = () => {
             style={{ marginLeft: "10px" }}
             color="purple"
             onClick={handleBalance}
-            disabled={value === 0 || value === "" || Math.abs(value) > Math.abs(balance)}
+            disabled={
+              value === 0 ||
+              value === "" ||
+              Math.abs(value) > Math.abs(balance) ||
+              (name === "" && value === 0) ||
+              value === 0
+            }
           >
             Update
           </Button>
@@ -84,6 +93,7 @@ const TransactionSender = () => {
       )}
       {balance < value && <div>You need to pay the money that you have</div>}
       {error && <div>You need put the quantity correctly</div>}
+      {success && <div>{`You send some money correctly`}</div>}
     </div>
   );
 };
