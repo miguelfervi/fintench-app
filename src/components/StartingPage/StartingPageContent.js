@@ -1,10 +1,11 @@
-import classes from './StartingPageContent.module.css';
+import { Header, Container } from "semantic-ui-react";
 
 const StartingPageContent = () => {
   return (
-    <section className={classes.starting}>
-      <h1>Welcome on Board!</h1>
-    </section>
+    <Container align="center" style={{ marginTop: "80px" }}>
+      <Header as="h1">Welcome to Fintech App!</Header>
+      <Header as="h2">To start, click on Log In and sign in or sign up</Header>
+    </Container>
   );
 };
 
