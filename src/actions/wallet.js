@@ -1,4 +1,6 @@
 import { types } from "../types/types";
+import uniqid from 'uniqid';
+
 
 export const loadBalance = () => ({
   type: types.loadBalance,
@@ -6,7 +8,7 @@ export const loadBalance = () => ({
 
 export const updateBalance = (value) => {
   return (dispatch) => {
-    dispatch(addTransaction(value, Date.now()));
+    dispatch(addTransaction(value, uniqid()));
 
     dispatch({
       type: types.updateBalance,
