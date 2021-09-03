@@ -1,6 +1,4 @@
 import { types } from "../types/types";
-import uniqid from 'uniqid';
-
 
 export const loadBalance = () => ({
   type: types.loadBalance,
@@ -8,8 +6,6 @@ export const loadBalance = () => ({
 
 export const updateBalance = (value) => {
   return (dispatch) => {
-    dispatch(addTransaction(value, uniqid()));
-
     dispatch({
       type: types.updateBalance,
       payload: value,
@@ -17,15 +13,18 @@ export const updateBalance = (value) => {
   };
 };
 
-export const addTransaction = (value, id) => {
-  let text = ''
-  if (value < 0 ){
-    text = `You have retired into the wallet $${value}`
+export const addTransaction = (value, name, id) => {
+  let text = "";
+  if (value < 0 && name === '') {
+    text = `You have deposited from the wallet $${value}`;
+  } else if (value > 0 && name === "") {
+    text = `You have deposited from the wallet $${value}`;
   } else {
-    text = `You have deposited from the wallet $${value}`
+    text = `You send credit  $${value} to ${name} `;
   }
-  return ({
+
+  return {
     type: types.addTransaction,
-    payload: { id, text},
-  });
+    payload: { id, text },
+  };
 };

@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { loadBalance, updateBalance } from "../../actions/wallet";
+import { loadBalance, updateBalance, addTransaction } from "../../actions/wallet";
 
 import { Input, Button, Header, Table, Container } from "semantic-ui-react";
+import uniqid from 'uniqid';
+
 
 const WalletComponent = () => {
   const { balance, history } = useSelector((state) => state.wallet);
@@ -17,6 +19,7 @@ const WalletComponent = () => {
 
   const handleBalance = () => {
     dispatch(updateBalance(value));
+    dispatch(addTransaction(value, '',  uniqid()));
     dispatch(loadBalance());
     setValue("");
   };
