@@ -8,6 +8,8 @@ import { firebase } from "../../firebase/firebase-config";
 import WalletPage from "../Wallet/Wallet";
 import AuthPage from "../../pages/AuthPage";
 import HomePage from "../../pages/HomePage";
+import SendPage from "../../pages/SendPage";
+
 import { PrivateRoute } from "../../routers/PrivateRoute";
 import { PublicRoute } from "../../routers/PublicRoute";
 
@@ -89,7 +91,7 @@ const MainNavigation = () => {
         <PrivateRoute
           path="/send"
           isAuthenticated={isLoggedIn}
-          component={HomePage}
+          component={SendPage}
         />
         <Redirect to="/" />
       </Switch>
