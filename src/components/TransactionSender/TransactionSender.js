@@ -16,6 +16,7 @@ const TransactionSender = () => {
   const dispatch = useDispatch();
   const [value, setValue] = useState("");
   const [name, setName] = useState("");
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     dispatch(loadBalance());
@@ -30,14 +31,13 @@ const TransactionSender = () => {
   };
 
   const handleInput = (e) => {
-    if (e.target.value !== "" && e.target.value.charAt(0) === "-") {
-      const isGreaterThan = balance < Math.abs(e.target.value);
-
-      !isGreaterThan && balance > 0
-        ? setValue(parseInt(e.target.value))
-        : setValue(-balance);
+    setError(false);
+    if (e.target.value.charAt(0) !== "-" && e.target.value !== '') {
+      setError(true);
+      setValue('');
     } else {
-      e.target.value === "" ? setValue("") : setValue(parseInt(e.target.value));
+      setError(false);
+      setValue(parseInt(e.target.value));
     }
   };
 
@@ -53,7 +53,10 @@ const TransactionSender = () => {
       </div>
       {balance > 0 ? (
         <div>
-          <Header as="h5">Introduce a name and a quantity to transfer</Header>
+          <Header as="h5">
+            Introduce a name and a quantity to transfer using negative symbol
+            (-)
+          </Header>
           <Input
             type="text"
             value={name}
@@ -62,6 +65,7 @@ const TransactionSender = () => {
           />
           <Input
             type="number"
+            style={{ marginLeft: "20px" }}
             onChange={handleInput}
             value={value}
             placeholder="Introduce a quantity"
@@ -70,7 +74,7 @@ const TransactionSender = () => {
             style={{ marginLeft: "10px" }}
             color="purple"
             onClick={handleBalance}
-            disabled={value === 0 || value === ""}
+            disabled={value === 0 || value === "" || Math.abs(value) > Math.abs(balance)}
           >
             Update
           </Button>
@@ -78,6 +82,8 @@ const TransactionSender = () => {
       ) : (
         <div>You need to have balance</div>
       )}
+      {balance < value && <div>You need to pay the money that you have</div>}
+      {error && <div>You need put the quantity correctly</div>}
     </div>
   );
 };
