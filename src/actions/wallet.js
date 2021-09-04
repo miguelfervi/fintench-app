@@ -27,7 +27,7 @@ export const addTransaction = (value, name, id) => {
   if (value < 0 && name === '') {
     text = `You have retired from the wallet $${ -1* value}`;
   } else if (value > 0 && name === "") {
-    text = `You have entered from the wallet $${value}`;
+    text = `You have entered into the wallet $${value}`;
   } else {
     text = `You send credit $${value} to ${name} `;
   }
