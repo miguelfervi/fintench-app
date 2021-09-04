@@ -13,7 +13,7 @@ const TableComponent = ({ data }) => {
     ));
 
   return (
-    <div>
+    <div data-testid='table'>
       {data.length > 0 ? (
         <Container
           textAlign="center"

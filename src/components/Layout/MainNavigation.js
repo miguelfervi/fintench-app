@@ -14,7 +14,7 @@ import { PrivateRoute } from "../../routers/PrivateRoute";
 import { PublicRoute } from "../../routers/PublicRoute";
 
 import { login, startLogout } from "../../actions/auth";
-import classes from "./MainNavigation.module.css";
+import './styles.css';
 
 const MainNavigation = () => {
   const dispatch = useDispatch();
@@ -45,8 +45,8 @@ const MainNavigation = () => {
 
   return (
     <BrowserRouter>
-      <header className={classes.header}>
-        <div className={classes.logo}>Fintech App</div>
+      <header className='header'>
+        <div className='logo'>Fintech App</div>
         <nav>
           <ul>
             {!isLoggedIn && (

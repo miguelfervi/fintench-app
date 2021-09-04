@@ -15,7 +15,7 @@ const BalanceComponent = () => {
   }, [dispatch]);
 
   return (
-    <div>
+    <div data-testid="balance">
       <Header as="h1">Your Wallet</Header>
       <div>
         Your balance<Header as="h1"> ${balance}</Header>

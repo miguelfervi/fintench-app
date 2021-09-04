@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import validator from "validator";
 
-import classes from "./AuthForm.module.css";
+import "./styles.css";
 import {
   startLoginEmailPassword,
   startRegisterEmailPassword,
@@ -58,21 +58,21 @@ const AuthForm = () => {
   };
 
   return (
-    <section className={classes.auth}>
+    <section data-testid="form" className="auth">
       <h1>{isLogin ? "Login" : "Sign Up"}</h1>
-      {msgError && <div className={classes.error}>{msgError}</div>}
+      {msgError && <div className={"error"}>{msgError}</div>}
       <form onSubmit={submitHandler}>
         {!isLogin && (
-          <div className={classes.control}>
+          <div className={"control"}>
             <label htmlFor="name">Your Name</label>
             <input type="text" id="name" required ref={nameInputRef} />
           </div>
         )}
-        <div className={classes.control}>
+        <div className={"control"}>
           <label htmlFor="email">Your Email</label>
           <input type="email" id="email" required ref={emailInputRef} />
         </div>
-        <div className={classes.control}>
+        <div className={"control"}>
           <label htmlFor="password">Your Password</label>
           <input
             type="password"
@@ -81,15 +81,15 @@ const AuthForm = () => {
             required
           />
         </div>
-        <div className={classes.actions}>
+        <div className={"actions"}>
           {loading ? (
             <button disabled={loading}>Loading...</button>
           ) : (
-            <button>{buttonMessage}</button>
+            <button data-testid='button'>{buttonMessage}</button>
           )}
           <button
             type="button"
-            className={classes.toggle}
+            className={"toggle"}
             onClick={switchAuthModeHandler}
           >
             {isLogin ? "Create new account" : "Login with existing account"}
