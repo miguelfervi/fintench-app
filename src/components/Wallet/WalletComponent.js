@@ -44,7 +44,7 @@ const WalletComponent = () => {
   return (
     <div>
       <BalanceComponent />
-      <Header as="h5">Introduce a quantity to deposit</Header>
+      <Header as="h5">Introduce a quantity to deposit o using symbol (-) to retired money</Header>
       <Input
         type="number"
         onChange={handleInput}
